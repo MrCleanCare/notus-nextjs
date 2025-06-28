@@ -3,11 +3,17 @@ import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
+import { appWithTranslation } from 'next-i18next';
+import nextI18NextConfig from '../next-i18next.config';
 
 import PageChange from "components/PageChange/PageChange.js";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
+import "styles/index.css";
+import "@fontsource/cairo/400.css";
+import "@fontsource/cairo/700.css";
+import "../styles/arabic-font.css";
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -26,7 +32,7 @@ Router.events.on("routeChangeError", () => {
   document.body.classList.remove("body-page-transition");
 });
 
-export default class MyApp extends App {
+class MyApp extends App {
   componentDidMount() {
     let comment = document.createComment(`
 
@@ -48,6 +54,14 @@ export default class MyApp extends App {
 
 `);
     document.insertBefore(comment, document.documentElement);
+
+    if (typeof window !== 'undefined') {
+      if (document.documentElement.dir === 'rtl') {
+        document.body.style.fontFamily = 'Cairo, sans-serif';
+      } else {
+        document.body.style.fontFamily = '';
+      }
+    }
   }
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
@@ -80,3 +94,5 @@ export default class MyApp extends App {
     );
   }
 }
+
+export default appWithTranslation(MyApp, nextI18NextConfig);

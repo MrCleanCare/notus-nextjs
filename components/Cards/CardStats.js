@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from 'next-i18next';
 
 export default function CardStats({
   statSubtitle,
@@ -11,6 +12,7 @@ export default function CardStats({
   statIconName,
   statIconColor,
 }) {
+  const { t } = useTranslation('common');
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -57,12 +59,12 @@ export default function CardStats({
 }
 
 CardStats.defaultProps = {
-  statSubtitle: "Traffic",
+  statSubtitle: 'Traffic',
   statTitle: "350,897",
   statArrow: "up",
   statPercent: "3.48",
   statPercentColor: "text-emerald-500",
-  statDescripiron: "Since last month",
+  statDescripiron: 'Since last month',
   statIconName: "far fa-chart-bar",
   statIconColor: "bg-red-500",
 };
@@ -80,4 +82,5 @@ CardStats.propTypes = {
   // can be any of the background color utilities
   // from tailwindcss
   statIconColor: PropTypes.string,
+  // statSubtitle, statTitle, statDescripiron يجب أن تكون مفاتيح ترجمة أو نصوص مترجمة مسبقًا
 };

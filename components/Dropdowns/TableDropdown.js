@@ -1,7 +1,9 @@
 import React from "react";
 import { createPopper } from "@popperjs/core";
+import { useTranslation } from 'next-i18next';
 
 const NotificationDropdown = () => {
+  const { t } = useTranslation('common');
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
@@ -42,7 +44,7 @@ const NotificationDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Action
+          {t('action')}
         </a>
         <a
           href="#pablo"
@@ -51,7 +53,7 @@ const NotificationDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Another action
+          {t('another_action')}
         </a>
         <a
           href="#pablo"
@@ -60,7 +62,7 @@ const NotificationDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Something else here
+          {t('something_else_here')}
         </a>
       </div>
     </>

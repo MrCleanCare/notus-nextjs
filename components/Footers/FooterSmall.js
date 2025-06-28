@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from 'next-i18next';
 
 export default function FooterSmall(props) {
+  const { t } = useTranslation('common');
   return (
     <>
       <footer
@@ -15,7 +17,7 @@ export default function FooterSmall(props) {
           <div className="flex flex-wrap items-center md:justify-between justify-center">
             <div className="w-full md:w-4/12 px-4">
               <div className="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left">
-                Copyright © {new Date().getFullYear()}{" "}
+                {t('copyright', { year: new Date().getFullYear() })}{" "}
                 <a
                   href="https://www.creative-tim.com?ref=nnjs-footer-small"
                   className="text-white hover:text-blueGray-300 text-sm font-semibold py-1"
@@ -39,7 +41,7 @@ export default function FooterSmall(props) {
                     href="https://www.creative-tim.com/presentation?ref=nnjs-footer-small"
                     className="text-white hover:text-blueGray-300 text-sm font-semibold block py-1 px-3"
                   >
-                    About Us
+                    {t('about_us')}
                   </a>
                 </li>
                 <li>
@@ -47,7 +49,7 @@ export default function FooterSmall(props) {
                     href="http://blog.creative-tim.com?ref=nnjs-footer-small"
                     className="text-white hover:text-blueGray-300 text-sm font-semibold block py-1 px-3"
                   >
-                    Blog
+                    {t('blog')}
                   </a>
                 </li>
                 <li>
@@ -55,7 +57,7 @@ export default function FooterSmall(props) {
                     href="https://github.com/creativetimofficial/notus-nextjs/blob/main/LICENSE.md?ref=nnjs-footer-small"
                     className="text-white hover:text-blueGray-300 text-sm font-semibold block py-1 px-3"
                   >
-                    MIT License
+                    {t('mit_license')}
                   </a>
                 </li>
               </ul>

@@ -1,7 +1,9 @@
 import React from "react";
 import { createPopper } from "@popperjs/core";
+import { useTranslation } from 'next-i18next';
 
 const UserDropdown = () => {
+  const { t } = useTranslation('common');
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
@@ -50,7 +52,7 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Action
+          {t('action')}
         </a>
         <a
           href="#pablo"
@@ -59,7 +61,7 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Another action
+          {t('another_action')}
         </a>
         <a
           href="#pablo"
@@ -68,7 +70,7 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Something else here
+          {t('something_else_here')}
         </a>
         <div className="h-0 my-2 border border-solid border-blueGray-100" />
         <a
@@ -78,7 +80,7 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Seprated link
+          {t('separated_link')}
         </a>
       </div>
     </>
