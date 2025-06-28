@@ -1,14 +1,15 @@
 import React from "react";
-
-// components
-
 import CardStats from "components/Cards/CardStats.js";
+import { useTranslation } from 'next-i18next';
 
 export default function HeaderStats() {
+  const { i18n } = useTranslation('common');
+  const isRTL = i18n.language === 'ar';
   return (
     <>
       {/* Header */}
-      <div className="relative bg-blueGray-800 md:pt-32 pb-32 pt-12">
+      <div className="relative bg-gradient-to-r from-teal-500 to-blueGray-800 md:pt-32 pb-32 pt-12 drop-shadow-md transition-all duration-300"
+        style={{ fontFamily: isRTL ? 'Cairo, sans-serif' : 'Segoe UI, sans-serif', direction: isRTL ? 'rtl' : 'ltr' }}>
         <div className="px-4 md:px-10 mx-auto w-full">
           <div>
             {/* Card stats */}

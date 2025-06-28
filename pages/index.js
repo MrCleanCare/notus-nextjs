@@ -26,7 +26,7 @@ export default function Index() {
   }, []);
 
   return (
-    <div style={{ fontFamily: isRTL ? 'Cairo, sans-serif' : 'inherit' }}>
+    <div style={{ fontFamily: isRTL ? 'Cairo, sans-serif' : 'Segoe UI, sans-serif', direction: isRTL ? 'rtl' : 'ltr' }} className="bg-gradient-to-br from-teal-50 to-blueGray-100 dark:from-blueGray-900 dark:to-blueGray-800 min-h-screen transition-all duration-300">
       <IndexNavbar fixed />
       {/* Hero Section */}
       <section className="header relative pt-24 flex items-center min-h-[80vh] bg-gradient-to-br from-blue-100 to-blue-50">

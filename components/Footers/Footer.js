@@ -2,10 +2,14 @@ import React from "react";
 import { useTranslation } from 'next-i18next';
 
 export default function Footer() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const isRTL = i18n.language === 'ar';
   return (
     <>
-      <footer className="relative bg-blueGray-200 pt-8 pb-6">
+      <footer
+        className="relative bg-gradient-to-b from-teal-50 to-blueGray-100 dark:from-blueGray-900 dark:to-blueGray-800 pt-8 pb-6 shadow-inner drop-shadow-md transition-all duration-300"
+        style={{ fontFamily: isRTL ? 'Cairo, sans-serif' : 'Segoe UI, sans-serif', direction: isRTL ? 'rtl' : 'ltr' }}
+      >
         <div
           className="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20 h-20"
           style={{ transform: "translateZ(0)" }}
@@ -28,31 +32,31 @@ export default function Footer() {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap text-center lg:text-left">
             <div className="w-full lg:w-6/12 px-4">
-              <h4 className="text-3xl font-semibold">{t('keep_in_touch')}</h4>
-              <h5 className="text-lg mt-0 mb-2 text-blueGray-600">
+              <h4 className="text-3xl font-extrabold text-teal-700 dark:text-teal-300 mb-2 drop-shadow-sm transition-colors duration-200">{t('keep_in_touch')}</h4>
+              <h5 className="text-lg mt-0 mb-2 text-blueGray-600 dark:text-blueGray-200 font-medium transition-colors duration-200">
                 {t('find_us_on_platforms')}
               </h5>
-              <div className="mt-6 lg:mb-0 mb-6">
+              <div className="mt-6 lg:mb-0 mb-6 flex gap-2">
                 <button
-                  className="bg-white text-lightBlue-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
+                  className="bg-white dark:bg-blueGray-700 text-teal-400 shadow-lg font-normal h-10 w-10 flex items-center justify-center rounded-full outline-none focus:outline-none hover:bg-teal-50 dark:hover:bg-blueGray-600 transition-colors duration-200"
                   type="button"
                 >
                   <i className="fab fa-twitter"></i>
                 </button>
                 <button
-                  className="bg-white text-lightBlue-600 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
+                  className="bg-white dark:bg-blueGray-700 text-teal-600 shadow-lg font-normal h-10 w-10 flex items-center justify-center rounded-full outline-none focus:outline-none hover:bg-teal-50 dark:hover:bg-blueGray-600 transition-colors duration-200"
                   type="button"
                 >
                   <i className="fab fa-facebook-square"></i>
                 </button>
                 <button
-                  className="bg-white text-pink-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
+                  className="bg-white dark:bg-blueGray-700 text-pink-400 shadow-lg font-normal h-10 w-10 flex items-center justify-center rounded-full outline-none focus:outline-none hover:bg-teal-50 dark:hover:bg-blueGray-600 transition-colors duration-200"
                   type="button"
                 >
                   <i className="fab fa-dribbble"></i>
                 </button>
                 <button
-                  className="bg-white text-blueGray-800 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
+                  className="bg-white dark:bg-blueGray-700 text-blueGray-800 dark:text-blueGray-200 shadow-lg font-normal h-10 w-10 flex items-center justify-center rounded-full outline-none focus:outline-none hover:bg-teal-50 dark:hover:bg-blueGray-600 transition-colors duration-200"
                   type="button"
                 >
                   <i className="fab fa-github"></i>

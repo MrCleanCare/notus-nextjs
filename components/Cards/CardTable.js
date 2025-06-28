@@ -1,29 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from 'next-i18next';
-
-// components
-
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
 export default function CardTable({ color }) {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const isRTL = i18n.language === 'ar';
   return (
     <>
       <div
         className={
-          "relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded " +
-          (color === "light" ? "bg-white" : "bg-blueGray-700 text-white")
+          `relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-xl drop-shadow-md transition-all duration-300 ${color === "light" ? "bg-white" : "bg-blueGray-700 text-white"}`
         }
+        style={{ fontFamily: isRTL ? 'Cairo, sans-serif' : 'Segoe UI, sans-serif', direction: isRTL ? 'rtl' : 'ltr' }}
       >
-        <div className="rounded-t mb-0 px-4 py-3 border-0">
+        <div className="rounded-t mb-0 px-4 py-3 border-0 bg-gradient-to-r from-teal-50 to-blueGray-100 dark:from-blueGray-900 dark:to-blueGray-800">
           <div className="flex flex-wrap items-center">
             <div className="relative w-full px-4 max-w-full flex-grow flex-1">
               <h3
-                className={
-                  "font-semibold text-lg " +
-                  (color === "light" ? "text-blueGray-700" : "text-white")
-                }
+                className={`font-extrabold text-lg md:text-xl text-teal-700 dark:text-teal-300 drop-shadow-sm transition-colors duration-200`}
               >
                 {t('card_tables')}
               </h3>

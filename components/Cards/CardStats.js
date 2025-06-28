@@ -12,17 +12,19 @@ export default function CardStats({
   statIconName,
   statIconColor,
 }) {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const isRTL = i18n.language === 'ar';
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+      <div className="relative flex flex-col min-w-0 break-words bg-white rounded-xl mb-6 xl:mb-0 shadow-lg drop-shadow-md transition-all duration-300"
+        style={{ fontFamily: isRTL ? 'Cairo, sans-serif' : 'Segoe UI, sans-serif', direction: isRTL ? 'rtl' : 'ltr' }}>
         <div className="flex-auto p-4">
           <div className="flex flex-wrap">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-              <h5 className="text-blueGray-400 uppercase font-bold text-xs">
+              <h5 className="text-teal-400 uppercase font-bold text-xs md:text-sm transition-colors duration-200">
                 {statSubtitle}
               </h5>
-              <span className="font-semibold text-xl text-blueGray-700">
+              <span className="font-extrabold text-xl md:text-2xl text-teal-700 dark:text-teal-300 drop-shadow-sm transition-colors duration-200">
                 {statTitle}
               </span>
             </div>

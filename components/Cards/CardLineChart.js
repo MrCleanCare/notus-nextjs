@@ -14,7 +14,8 @@ Chart.Chart.register(
 );
 
 export default function CardLineChart() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n?.language === "ar";
   React.useEffect(() => {
     var config = {
       type: "line",
@@ -110,17 +111,22 @@ export default function CardLineChart() {
     };
     var ctx = document.getElementById("line-chart").getContext("2d");
     window.myLine = new Chart.Chart(ctx, config);
-  }, []);
+  }, [t]);
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
-        <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
+      <div
+        className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl drop-shadow-md transition-all duration-300"
+        style={{
+          fontFamily: isRTL ? "Cairo, sans-serif" : "Segoe UI, sans-serif",
+          direction: isRTL ? "rtl" : "ltr",
+        }}
+      >
+        <div className="rounded-t mb-0 px-4 py-3 border-0 bg-gradient-to-r from-teal-50 to-blueGray-100 dark:from-blueGray-900 dark:to-blueGray-800">
           <div className="flex flex-wrap items-center">
-            <div className="relative w-full max-w-full flex-grow flex-1">
-              <h6 className="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
-                Overview
-              </h6>
-              <h2 className="text-white text-xl font-semibold">Sales value</h2>
+            <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3 className="font-extrabold text-base md:text-lg text-teal-700 dark:text-teal-300 drop-shadow-sm transition-colors duration-200">
+                {t("line_chart")}
+              </h3>
             </div>
           </div>
         </div>

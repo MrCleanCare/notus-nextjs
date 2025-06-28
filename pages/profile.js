@@ -23,7 +23,7 @@ export default function Profile() {
   }, []);
 
   return (
-    <>
+    <div style={{ fontFamily: isRTL ? 'Cairo, sans-serif' : 'Segoe UI, sans-serif', direction: isRTL ? 'rtl' : 'ltr' }} className="bg-gradient-to-br from-teal-50 to-blueGray-100 dark:from-blueGray-900 dark:to-blueGray-800 min-h-screen transition-all duration-300">
       <Navbar transparent />
       {/* About Company Section */}
       <section className="relative pt-24 flex items-center min-h-[60vh] bg-gradient-to-br from-blue-100 to-blue-50">
@@ -113,6 +113,6 @@ export default function Profile() {
         </div>
       </section>
       <Footer />
-    </>
+    </div>
   );
 }
