@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  Chart,
-  BarController,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import * as Chart from "chart.js";
 import { useTranslation } from "react-i18next";
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
+Chart.Chart.register(Chart.BarController, Chart.BarElement, Chart.CategoryScale, Chart.LinearScale, Chart.Title, Chart.Tooltip, Chart.Legend);
 
 export default function CardBarChart() {
   const { t } = useTranslation();
@@ -88,7 +79,7 @@ export default function CardBarChart() {
       },
     };
     let ctx = document.getElementById("bar-chart").getContext("2d");
-    window.myBar = new Chart(ctx, config);
+    window.myBar = new Chart.Chart(ctx, config);
   }, []);
   return (
     <>

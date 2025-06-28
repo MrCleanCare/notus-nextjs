@@ -1,26 +1,16 @@
 import React from "react";
-import {
-  Chart,
-  LineController,
-  LineElement,
-  PointElement,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import * as Chart from "chart.js";
 import { useTranslation } from "react-i18next";
 
-Chart.register(
-  LineController,
-  LineElement,
-  PointElement,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend
+Chart.Chart.register(
+  Chart.LineController,
+  Chart.LineElement,
+  Chart.PointElement,
+  Chart.CategoryScale,
+  Chart.LinearScale,
+  Chart.Title,
+  Chart.Tooltip,
+  Chart.Legend
 );
 
 export default function CardLineChart() {
@@ -119,7 +109,7 @@ export default function CardLineChart() {
       },
     };
     var ctx = document.getElementById("line-chart").getContext("2d");
-    window.myLine = new Chart(ctx, config);
+    window.myLine = new Chart.Chart(ctx, config);
   }, []);
   return (
     <>
