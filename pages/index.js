@@ -4,9 +4,6 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '../next-i18next.config';
 import Link from "next/link";
-import "@fontsource/cairo/400.css";
-import "@fontsource/cairo/700.css";
-import "../styles/arabic-font.css";
 
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import Footer from "components/Footers/Footer.js";

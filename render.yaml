@@ -1,0 +1,23 @@
+# Render.com deployment configuration for Next.js
+
+# 1. Node version
+node_version = "18"
+
+# 2. Build and start commands
+[build]
+command = "npm install && npm run build"
+
+[start]
+command = "npm run start"
+
+# 3. Environment variables (set these in Render dashboard, not here)
+# NEXT_PUBLIC_API_URL=...
+# NEXTAUTH_URL=...
+# ...etc
+
+# 4. Output directory
+output = ".next"
+
+# 5. Ignore files for deployment (optional)
+[ignore]
+files = [".git", "node_modules", "*.log", ".vscode", "README.md", "CHANGELOG.md"]
