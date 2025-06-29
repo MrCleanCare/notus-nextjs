@@ -1,89 +1,76 @@
 import React from "react";
 
 function MapExample() {
-  const mapRef = React.useRef(null);
-  React.useEffect(() => {
-    let google = window.google;
-    let map = mapRef.current;
-    let lat = "40.748817";
-    let lng = "-73.985428";
-    const myLatlng = new google.maps.LatLng(lat, lng);
-    const mapOptions = {
-      zoom: 12,
-      center: myLatlng,
-      scrollwheel: false,
-      zoomControl: true,
-      styles: [
-        {
-          featureType: "administrative",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#444444" }],
-        },
-        {
-          featureType: "landscape",
-          elementType: "all",
-          stylers: [{ color: "#f2f2f2" }],
-        },
-        {
-          featureType: "poi",
-          elementType: "all",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "road",
-          elementType: "all",
-          stylers: [{ saturation: -100 }, { lightness: 45 }],
-        },
-        {
-          featureType: "road.highway",
-          elementType: "all",
-          stylers: [{ visibility: "simplified" }],
-        },
-        {
-          featureType: "road.arterial",
-          elementType: "labels.icon",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "transit",
-          elementType: "all",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "water",
-          elementType: "all",
-          stylers: [{ color: "#cbd5e0" }, { visibility: "on" }],
-        },
-      ],
-    };
+  // إحداثيات الموقع (حي الفيصلية - طريق الأمير محمد بن عبدالعزيز)
+  const lat = 21.559527;
+  const lng = 39.184956;
+  const mapSrc = `https://www.google.com/maps?q=${lat},${lng}&hl=ar&z=16&output=embed`;
+  const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
+  // تحديد اتجاه البطاقة حسب اللغة
+  const isRTL = typeof window !== 'undefined' ? document.dir === 'rtl' : true;
 
-    map = new google.maps.Map(map, mapOptions);
-
-    const marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      animation: google.maps.Animation.DROP,
-      title: "Notus NextJS!",
-    });
-
-    const contentString =
-      '<div class="info-window-content"><h2>Notus NextJS</h2>' +
-      "<p>A free Admin for Tailwind CSS, React, React Hooks, and NextJS.</p></div>";
-
-    const infowindow = new google.maps.InfoWindow({
-      content: contentString,
-    });
-
-    google.maps.event.addListener(marker, "click", function () {
-      infowindow.open(map, marker);
-    });
-  });
   return (
-    <>
-      <div className="relative w-full rounded h-600-px">
-        <div className="rounded h-full" ref={mapRef} />
+    <div className="relative w-full rounded-lg overflow-hidden shadow-md border border-teal-100 dark:border-teal-700 min-h-[420px]">
+      {/* بطاقة معلومات الموقع مصغرة في الزاوية */}
+      <div
+        className={`absolute top-4 ${isRTL ? 'right-4' : 'left-4'} z-30 bg-white dark:bg-blueGray-900 rounded-lg shadow-lg px-4 py-3 text-right font-cairo min-w-[220px] max-w-[90vw] border-t-4 border-teal-500 flex flex-col items-center gap-1`}
+        dir="rtl"
+        style={{zIndex: 30, width: 270, maxWidth: '95vw'}}
+      >
+        {/* الشعار واسم الشركة */}
+        <img
+          src="/img/cleaning_world_logo_transparent.png"
+          alt="شعار عالم النظافة"
+          className="w-16 h-12 object-contain mb-1"
+        />
+        <h2 className="text-base font-extrabold text-teal-700 dark:text-teal-300 mb-0 leading-tight">
+          عالم النظافة
+        </h2>
+        <span className="text-xs text-blueGray-500 dark:text-blueGray-200 mb-1">
+          Cleaning World
+        </span>
+        {/* بيانات العنوان */}
+        <div className="text-xs text-blueGray-700 dark:text-blueGray-100 font-bold mb-1 leading-tight">
+          بلدية المطار، حي الفيصلية<br />طريق الامير محمد بن عبد العزيز<br />{lat} , {lng}
+        </div>
+        {/* بيانات التواصل */}
+        <div className="flex flex-col gap-0.5 mb-1 w-full items-start">
+          <div className="flex flex-row items-center gap-1 text-xs text-blueGray-700 dark:text-blueGray-100">
+            <i className="fas fa-phone-alt text-teal-500"></i>
+            <span>0123456789</span>
+          </div>
+          <div className="flex flex-row items-center gap-1 text-xs text-blueGray-700 dark:text-blueGray-100">
+            <i className="fab fa-whatsapp text-green-500"></i>
+            <span>+966500000000</span>
+          </div>
+          <div className="flex flex-row items-center gap-1 text-xs text-blueGray-700 dark:text-blueGray-100">
+            <i className="fas fa-envelope text-teal-500"></i>
+            <span>info@cleaningworld.sa</span>
+          </div>
+        </div>
+        {/* زر فتح الموقع في Google Maps */}
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-2 py-1 bg-teal-500 hover:bg-teal-600 text-white rounded font-bold text-xs shadow transition-colors duration-150 mt-1"
+        >
+          <i className="fas fa-map-marker-alt"></i>
+          خريطة Google
+        </a>
       </div>
-    </>
+      <iframe
+        title="موقع عالم النظافة - جدة"
+        src={mapSrc}
+        width="100%"
+        height="400"
+        style={{ border: 0 }}
+        allowFullScreen=""
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        className="w-full h-96 min-h-[350px]"
+      ></iframe>
+    </div>
   );
 }
 
