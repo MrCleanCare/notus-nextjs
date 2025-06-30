@@ -7,6 +7,7 @@ import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config';
 
 import PageChange from "components/PageChange/PageChange.js";
+import PrelineScript from "../components/PrelineScript";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
@@ -88,6 +89,7 @@ class MyApp extends App {
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         </Head>
         <Layout>
+          <PrelineScript />
           <Component {...pageProps} />
         </Layout>
       </React.Fragment>
