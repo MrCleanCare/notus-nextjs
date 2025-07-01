@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 // reactstrap components
 // import { Spinner } from "reactstrap";
@@ -6,6 +7,8 @@ import React from "react";
 // core components
 
 export default function PageChange(props) {
+  const { t } = useTranslation();
+
   return (
     <div>
       <div
@@ -20,7 +23,7 @@ export default function PageChange(props) {
           <i className="fas fa-circle-notch animate-spin text-white mx-auto text-6xl"></i>
         </div>
         <h4 className="text-lg font-medium text-white">
-          Loading page contents for: {props.path}
+          {t('loading_page', 'Loading page contents for:')} {props.path}
         </h4>
       </div>
     </div>

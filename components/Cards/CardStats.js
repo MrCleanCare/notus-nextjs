@@ -14,6 +14,15 @@ export default function CardStats({
 }) {
   const { t, i18n } = useTranslation('common');
   const isRTL = i18n.language === 'ar';
+
+  const debugT = (key, fallback = '') => {
+    const value = t(key, fallback);
+    if (value === key || value === '' || value === undefined) {
+      return `[${i18n.language}]::${key}`;
+    }
+    return value;
+  };
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white rounded-xl mb-6 xl:mb-0 shadow-lg drop-shadow-md transition-all duration-300"
@@ -22,7 +31,7 @@ export default function CardStats({
           <div className="flex flex-wrap">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
               <h5 className="text-teal-400 uppercase font-bold text-xs md:text-sm transition-colors duration-200">
-                {statSubtitle}
+                {debugT(`cardStats.${statSubtitle}`)}
               </h5>
               <span className="font-extrabold text-xl md:text-2xl text-teal-700 dark:text-teal-300 drop-shadow-sm transition-colors duration-200">
                 {statTitle}
@@ -52,7 +61,7 @@ export default function CardStats({
               ></i>{" "}
               {statPercent}%
             </span>
-            <span className="whitespace-nowrap">{statDescripiron}</span>
+            <span className="whitespace-nowrap">{debugT(`cardStats.${statDescripiron}`)}</span>
           </p>
         </div>
       </div>
@@ -61,12 +70,12 @@ export default function CardStats({
 }
 
 CardStats.defaultProps = {
-  statSubtitle: 'Traffic',
+  statSubtitle: 'traffic',
   statTitle: "350,897",
   statArrow: "up",
   statPercent: "3.48",
   statPercentColor: "text-emerald-500",
-  statDescripiron: 'Since last month',
+  statDescripiron: 'since_last_month',
   statIconName: "far fa-chart-bar",
   statIconColor: "bg-red-500",
 };

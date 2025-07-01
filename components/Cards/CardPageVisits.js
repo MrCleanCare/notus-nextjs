@@ -6,6 +6,13 @@ import { useTranslation } from "next-i18next";
 export default function CardPageVisits() {
   const { t, i18n } = useTranslation('common');
   const isRTL = i18n.language === 'ar';
+  const debugT = (key, fallback = '') => {
+    const value = t(key, fallback);
+    if (value === key || value === '' || value === undefined) {
+      return `[${i18n.language}]::${key}`;
+    }
+    return value;
+  };
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl drop-shadow-md transition-all duration-300"
@@ -33,16 +40,16 @@ export default function CardPageVisits() {
             <thead>
               <tr>
                 <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                  {t('page_name')}
+                  {debugT('page_name')}
                 </th>
                 <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                  {t('visitors')}
+                  {debugT('visitors')}
                 </th>
                 <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                  {t('unique_users')}
+                  {debugT('unique_users')}
                 </th>
                 <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                  {t('bounce_rate')}
+                  {debugT('bounce_rate')}
                 </th>
               </tr>
             </thead>
