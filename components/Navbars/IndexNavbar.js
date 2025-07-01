@@ -3,12 +3,14 @@ import Link from "next/link";
 import IndexDropdown from "components/Dropdowns/IndexDropdown.js";
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import { useAuth } from '../../utils/AuthContext';
 
 export default function Navbar() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const { t, i18n } = useTranslation('common');
   const router = useRouter();
   const isRTL = i18n.language === 'ar';
+  const { user, userName, userAvatar, role } = useAuth();
   const switchLanguage = () => {
     const nextLocale = router.locale === 'ar' ? 'en' : 'ar';
     router.push(router.pathname, router.asPath, { locale: nextLocale });
@@ -79,7 +81,39 @@ export default function Navbar() {
             <i className="text-teal-600 fab fa-github text-lg leading-lg " />
           </a>
         </div>
+        <div className="flex items-center">
+          {user ? (
+            <span className="text-blueGray-700 font-bold mr-4 flex items-center">
+              {userAvatar && <img src={userAvatar} alt="avatar" className="w-6 h-6 rounded-full mr-2" />}
+              <i className="fas fa-user-circle mr-2"></i>
+              {userName || user.email}
+            </span>
+          ) : (
+            <>
+              <a href="/auth/login" className="text-blueGray-700 font-bold mr-4 hover:underline">
+                {t('login', 'تسجيل الدخول')}
+              </a>
+              <a href="/auth/register" className="text-blueGray-700 font-bold hover:underline">
+                {t('register', 'تسجيل')}
+              </a>
+            </>
+          )}
+        </div>
       </div>
+      <ul className="...">
+        <li>
+          <Link href="/admin/dashboard">{t('dashboard', 'لوحة التحكم')}</Link>
+        </li>
+        <li>
+          <Link href="/admin/settings">{t('settings', 'الإعدادات')}</Link>
+        </li>
+        {role === 'admin' && (
+          <li>
+            <Link href="/admin/users">{t('user_management', 'إدارة المستخدمين')}</Link>
+          </li>
+        )}
+        {/* أضف هنا أي شاشات جديدة مستقبلًا */}
+      </ul>
     </nav>
   );
 }

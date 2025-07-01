@@ -1,9 +1,13 @@
 import React from "react";
 import { createPopper } from "@popperjs/core";
 import { useTranslation } from 'next-i18next';
+import { useAuth } from '../../utils/AuthContext';
+import { useRouter } from 'next/router';
 
 const UserDropdown = () => {
   const { t } = useTranslation('common');
+  const { user, userName, userAvatar, signOut } = useAuth();
+  const router = useRouter();
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
@@ -16,6 +20,10 @@ const UserDropdown = () => {
   };
   const closeDropdownPopover = () => {
     setDropdownPopoverShow(false);
+  };
+  const handleLogout = async () => {
+    await signOut();
+    router.push('/auth/login');
   };
   return (
     <>
@@ -30,11 +38,7 @@ const UserDropdown = () => {
       >
         <div className="items-center flex">
           <span className="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
-            <img
-              alt="..."
-              className="w-full rounded-full align-middle border-none shadow-lg"
-              src="/img/team-1-800x800.jpg"
-            />
+            {userAvatar && <img src={userAvatar} alt="avatar" className="w-full rounded-full align-middle border-none shadow-lg" />}
           </span>
         </div>
       </a>
@@ -45,43 +49,27 @@ const UserDropdown = () => {
           "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
         }
       >
-        <a
-          href="#pablo"
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          }
-          onClick={(e) => e.preventDefault()}
-        >
-          {t('action')}
-        </a>
-        <a
-          href="#pablo"
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          }
-          onClick={(e) => e.preventDefault()}
-        >
-          {t('another_action')}
-        </a>
-        <a
-          href="#pablo"
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          }
-          onClick={(e) => e.preventDefault()}
-        >
-          {t('something_else_here')}
-        </a>
-        <div className="h-0 my-2 border border-solid border-blueGray-100" />
-        <a
-          href="#pablo"
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          }
-          onClick={(e) => e.preventDefault()}
-        >
-          {t('separated_link')}
-        </a>
+        {user ? (
+          <>
+            <div className="px-4 py-2 text-sm text-blueGray-700 font-bold border-b border-blueGray-100 flex items-center">
+              {userAvatar && <img src={userAvatar} alt="avatar" className="w-6 h-6 rounded-full mr-2" />}
+              <i className="fas fa-user-circle mr-2"></i>
+              {userName || user.email}
+            </div>
+            <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+              <i className="fas fa-sign-out-alt mr-2"></i> Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <a href="/auth/login" className="block px-4 py-2 text-sm text-blueGray-700 hover:bg-blueGray-50">
+              <i className="fas fa-sign-in-alt mr-2"></i> Login
+            </a>
+            <a href="/auth/register" className="block px-4 py-2 text-sm text-blueGray-700 hover:bg-blueGray-50">
+              <i className="fas fa-user-plus mr-2"></i> Register
+            </a>
+          </>
+        )}
       </div>
     </>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from 'next-i18next';
+import { useAuth } from '../../utils/AuthContext';
 
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
@@ -11,6 +12,7 @@ export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
   const router = useRouter();
   const isRTL = i18n.language === 'ar';
+  const { user, role } = useAuth();
   return (
     <>
       <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-gradient-to-b from-white to-blueGray-100 dark:from-blueGray-900 dark:to-blueGray-800 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6 drop-shadow-md transition-all duration-300"
@@ -98,7 +100,7 @@ export default function Sidebar() {
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  {t('dashboard')}
+                  {t('dashboard', 'لوحة التحكم')}
                 </Link>
               </li>
               <li className="items-center">
@@ -116,7 +118,7 @@ export default function Sidebar() {
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  {t('settings')}
+                  {t('settings', 'الإعدادات')}
                 </Link>
               </li>
               <li className="items-center">
@@ -187,6 +189,26 @@ export default function Sidebar() {
                   {t('profile')}
                 </Link>
               </li>
+              {role === 'admin' && (
+                <li className="items-center">
+                  <Link href="/admin/users" className={
+                        "text-xs uppercase py-3 font-bold block " +
+                        (router.pathname.indexOf("/admin/users") !== -1
+                          ? "text-lightBlue-500 hover:text-lightBlue-600"
+                          : "text-blueGray-700 hover:text-blueGray-500")
+                      }>
+                    <i
+                      className={
+                        "fas fa-users mr-2 text-sm " +
+                        (router.pathname.indexOf("/admin/users") !== -1
+                          ? "opacity-75"
+                          : "text-blueGray-300")
+                      }
+                    ></i>{" "}
+                    {t('user_management', 'إدارة المستخدمين')}
+                  </Link>
+                </li>
+              )}
             </ul>
 
             {/* Divider */}
