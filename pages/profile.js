@@ -4,9 +4,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '../next-i18next.config';
 import Navbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footers/Footer.js";
-import { useAuth } from '../utils/AuthContext';
-import { useRouter } from 'next/router';
-import { supabase } from '../utils/supabaseClient';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -18,60 +15,12 @@ export async function getStaticProps({ locale }) {
 
 export default function Profile() {
   const { t } = useTranslation('common');
-  const { user, userName, userAvatar, role, loading } = useAuth();
-  const router = useRouter();
   const [isRTL, setIsRTL] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [newName, setNewName] = useState(userName || '');
-  const [newAvatar, setNewAvatar] = useState(null);
-  const [saving, setSaving] = useState(false);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setIsRTL(document.documentElement.dir === 'rtl');
     }
   }, []);
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/auth/login');
-    }
-  }, [user, loading]);
-
-  async function handleSave(e) {
-    e.preventDefault();
-    setSaving(true);
-    setError('');
-    setSuccess('');
-    let avatar_url = userAvatar;
-    if (newAvatar) {
-      // Upload avatar to Supabase Storage (avatars bucket)
-      const fileExt = newAvatar.name.split('.').pop();
-      const fileName = `${user.id}_${Date.now()}.${fileExt}`;
-      const { data, error: uploadError } = await supabase.storage.from('avatars').upload(fileName, newAvatar, { upsert: true });
-      if (uploadError) {
-        setError(t('avatar_upload_error', 'خطأ في رفع الصورة'));
-        setSaving(false);
-        return;
-      }
-      avatar_url = supabase.storage.from('avatars').getPublicUrl(fileName).data.publicUrl;
-    }
-    const { error: updateError } = await supabase.auth.updateUser({
-      data: { name: newName, avatar_url },
-    });
-    if (updateError) {
-      setError(updateError.message);
-    } else {
-      setSuccess(t('profile_updated', 'تم تحديث الملف الشخصي بنجاح'));
-      setEditMode(false);
-    }
-    setSaving(false);
-  }
-
-  if (loading || !user) {
-    return <div className="flex items-center justify-center min-h-screen">{t('loading', 'جاري التحميل...')}</div>;
-  }
 
   return (
     <div style={{ fontFamily: isRTL ? 'Cairo, sans-serif' : 'Segoe UI, sans-serif', direction: isRTL ? 'rtl' : 'ltr' }} className="bg-gradient-to-br from-teal-50 to-blueGray-100 dark:from-blueGray-900 dark:to-blueGray-800 min-h-screen transition-all duration-300">
@@ -163,33 +112,6 @@ export default function Profile() {
           </div>
         </div>
       </section>
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 mt-8 text-center">
-        <h1 className="text-2xl font-bold mb-4 text-blue-900">{t('profile', 'الملف الشخصي')}</h1>
-        <div className="flex flex-col items-center mb-4">
-          {userAvatar ? (
-            <img src={userAvatar} alt="avatar" className="w-24 h-24 rounded-full mb-2" />
-          ) : (
-            <i className="fas fa-user-circle text-6xl text-blueGray-300 mb-2"></i>
-          )}
-          <div className="font-bold text-lg">{userName || user.email}</div>
-          <div className="text-blueGray-500 text-sm">{user.email}</div>
-          <div className="mt-2 text-xs bg-blue-100 text-blue-700 rounded px-2 py-1 inline-block">{role === 'admin' ? t('admin', 'أدمن') : t('user', 'مستخدم')}</div>
-        </div>
-        {success && <div className="text-green-600 mb-2">{success}</div>}
-        {error && <div className="text-red-600 mb-2">{error}</div>}
-        {editMode ? (
-          <form className="mt-4" onSubmit={handleSave}>
-            <input type="text" className="border px-3 py-2 rounded mb-2 w-full" value={newName} onChange={e => setNewName(e.target.value)} placeholder={t('edit_name', 'تعديل الاسم')} />
-            <input type="file" className="mb-2 w-full" accept="image/*" onChange={e => setNewAvatar(e.target.files[0])} />
-            <div className="flex gap-2 justify-center">
-              <button type="submit" className="bg-blue-700 text-white px-4 py-2 rounded" disabled={saving}>{saving ? t('saving', 'جاري الحفظ...') : t('save', 'حفظ')}</button>
-              <button type="button" className="bg-gray-300 text-gray-800 px-4 py-2 rounded" onClick={() => setEditMode(false)}>{t('cancel', 'إلغاء')}</button>
-            </div>
-          </form>
-        ) : (
-          <button className="bg-blue-700 text-white px-4 py-2 rounded mt-4" onClick={() => setEditMode(true)}>{t('edit_profile', 'تعديل الملف الشخصي')}</button>
-        )}
-      </div>
       <Footer />
     </div>
   );

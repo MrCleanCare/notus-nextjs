@@ -2,9 +2,6 @@ import React from "react";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '../../next-i18next.config';
-import { useAuth } from '../../utils/AuthContext';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 // components
 
@@ -24,16 +21,6 @@ export async function getStaticProps({ locale }) {
 
 export default function Tables() {
   const { t } = useTranslation('common');
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/auth/login');
-    }
-  }, [user, loading]);
-  if (loading || !user) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  }
   return (
     <>
       <div className="mb-8">

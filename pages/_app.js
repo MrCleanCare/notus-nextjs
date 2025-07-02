@@ -8,7 +8,6 @@ import nextI18NextConfig from '../next-i18next.config';
 
 import PageChange from "components/PageChange/PageChange.js";
 import PrelineScript from "../components/PrelineScript";
-import { AuthProvider } from '../utils/AuthContext';
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "styles/tailwind.css";
@@ -71,22 +70,20 @@ class MyApp extends App {
     const Layout = Component.layout || (({ children }) => <>{children}</>);
 
     return (
-      <AuthProvider>
-        <React.Fragment>
-          <Head>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no"
-            />
-            <title>Notus NextJS by Creative Tim</title>
-            <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-          </Head>
-          <Layout>
-            <PrelineScript />
-            <Component {...pageProps} />
-          </Layout>
-        </React.Fragment>
-      </AuthProvider>
+      <React.Fragment>
+        <Head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <title>Notus NextJS by Creative Tim</title>
+          <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+        </Head>
+        <Layout>
+          <PrelineScript />
+          <Component {...pageProps} />
+        </Layout>
+      </React.Fragment>
     );
   }
 }

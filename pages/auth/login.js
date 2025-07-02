@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from '../../next-i18next.config';
 import Auth from "layouts/Auth.js";
-import { useAuth } from '../../utils/AuthContext';
-import { useRouter } from 'next/router';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -17,52 +15,6 @@ export async function getStaticProps({ locale }) {
 
 export default function Login() {
   const { t } = useTranslation('common');
-  const { signIn, signInWithGoogle, user, loading, requireEmailVerification, requirePasswordChange } = useAuth();
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  // Redirect if already logged in
-  useEffect(() => {
-    if (user && !requireEmailVerification && !requirePasswordChange) {
-      router.replace('/');
-    } else if (requireEmailVerification) {
-      router.replace('/auth/verify');
-    } else if (requirePasswordChange) {
-      router.replace('/auth/change-password');
-    }
-  }, [user, requireEmailVerification, requirePasswordChange]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    if (!email || !password) {
-      setError(t('all_fields_required', 'جميع الحقول مطلوبة'));
-      return;
-    }
-    try {
-      await signIn(email, password);
-    } catch (err) {
-      if (err.message && err.message.toLowerCase().includes('email not confirmed')) {
-        setError(t('email_not_confirmed', 'يرجى تفعيل بريدك الإلكتروني أولاً'));
-      } else if (err.message && err.message.toLowerCase().includes('invalid login credentials')) {
-        setError(t('invalid_login_credentials', 'البريد الإلكتروني أو كلمة المرور غير صحيحة'));
-      } else {
-        setError(err.message || t('login_error', 'خطأ في تسجيل الدخول'));
-      }
-    }
-  };
-
-  const handleGoogle = async () => {
-    setError('');
-    try {
-      await signInWithGoogle();
-    } catch (err) {
-      setError(err.message || t('login_error', 'خطأ في تسجيل الدخول'));
-    }
-  };
-
   return (
     <Auth>
       <div className="container mx-auto px-4 h-full">
@@ -80,7 +32,7 @@ export default function Login() {
                 </div>
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                <form onSubmit={handleSubmit}>
+                <form>
                   <div className="relative w-full mb-4">
                     <label className="block text-blueGray-600 text-xs font-bold mb-2" htmlFor="email">
                       {t('email', 'البريد الإلكتروني')}
@@ -88,8 +40,6 @@ export default function Login() {
                     <input
                       id="email"
                       type="email"
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
                       className="border px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:border-blue-400 w-full transition-all"
                       placeholder={t('email', 'البريد الإلكتروني')}
                     />
@@ -101,8 +51,6 @@ export default function Login() {
                     <input
                       id="password"
                       type="password"
-                      value={password}
-                      onChange={e => setPassword(e.target.value)}
                       className="border px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:border-blue-400 w-full transition-all"
                       placeholder={t('password', 'كلمة المرور')}
                     />
@@ -116,20 +64,14 @@ export default function Login() {
                       {t('no_account', 'ليس لديك حساب؟ سجل الآن')}
                     </Link>
                   </div>
-                  {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
                   <div className="text-center mt-6">
                     <button
                       className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-8 rounded shadow w-full transition"
                       type="submit"
-                      disabled={loading}
                     >
-                      {loading ? t('loading', 'جاري التحميل...') : t('login', 'تسجيل الدخول')}
+                      {t('login', 'تسجيل الدخول')}
                     </button>
                   </div>
-                  <button type="button" onClick={handleGoogle} className="w-full mt-4 flex items-center justify-center border border-gray-300 rounded py-2 bg-white hover:bg-gray-50" disabled={loading}>
-                    <img src="/public/img/google.svg" alt="Google" className="w-5 h-5 mr-2" />
-                    {t('login_with_google', 'تسجيل الدخول عبر جوجل')}
-                  </button>
                 </form>
               </div>
             </div>
