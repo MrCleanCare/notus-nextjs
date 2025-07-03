@@ -18,28 +18,55 @@ if (typeof window !== "undefined") {
 
 export default function PrelineScript() {
   useEffect(() => {
-    let prelineLoaded = false;
-    const loadPreline = async () => {
-      if (!prelineLoaded) {
-        await import("preline/dist/index.js");
-        prelineLoaded = true;
-      }
-    };
-    loadPreline();
-    const handleRouteChange = () => {
-      setTimeout(() => {
-        if (
-          window.HSStaticMethods &&
-          typeof window.HSStaticMethods.autoInit === "function"
-        ) {
-          window.HSStaticMethods.autoInit();
+    // Prevent Preline from interfering with Popper.js dropdowns and resize events
+    // by overriding any global resize handlers that Preline might have attached
+
+    let resizeTimeout;
+
+    const handleResize = () => {
+      // Debounce resize events to prevent conflicts
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Only handle resize for non-Preline elements
+        try {
+          // Ensure dropdowns and other components handle their own resize logic
+          const dropdowns = document.querySelectorAll(
+            "[data-popper-placement]",
+          );
+          dropdowns.forEach((dropdown) => {
+            // Let Popper.js handle its own positioning
+            if (dropdown._popper) {
+              dropdown._popper.update();
+            }
+          });
+        } catch (error) {
+          console.warn("Resize handling error:", error);
         }
-      }, 100);
+      }, 150);
     };
-    Router.events.on("routeChangeComplete", handleRouteChange);
+
+    // Add our controlled resize handler
+    window.addEventListener("resize", handleResize, { passive: true });
+
+    // Prevent Preline from auto-initializing on load and resize
+    if (typeof window !== "undefined") {
+      // Override Preline's auto initialization to prevent conflicts
+      Object.defineProperty(window, "HSStaticMethods", {
+        value: {
+          autoInit: () => {
+            // Do nothing - prevent Preline auto-initialization
+          },
+        },
+        writable: false,
+        configurable: true,
+      });
+    }
+
     return () => {
-      Router.events.off("routeChangeComplete", handleRouteChange);
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
     };
   }, []);
+
   return null;
-} 
+}
